@@ -1,4 +1,4 @@
-- # KoppenGeiger_inR (Work in progress)
+# KoppenGeiger_inR (Work in progress)
 This repository contains the R function for applying the Köppen-Geiger climate classification, based on Beck et al. (2018) Matlab function.
 
 Files:
