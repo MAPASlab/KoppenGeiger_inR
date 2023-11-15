@@ -39,24 +39,24 @@ kg_reclass <- function(Temp, Prec, type) {
   SUM_SEL[,, c(10, 11, 12, 1, 2, 3)] <- rep(!tmp,6)
   rm(tmp)
   
-  Pw <- apply(Prec*!SUM_SEL, c(1,2), sum) #where prec = -99, this is -594
-  Ps <- apply(Prec*SUM_SEL, c(1,2), sum) ##where prec = -99, this is -594
+  Pw <- apply(Prec*!SUM_SEL, c(1,2), sum) 
+  Ps <- apply(Prec*SUM_SEL, c(1,2), sum) 
   
-  Pdry <- apply (Prec, c(1,2), min) #where prec = -99, this is -99
+  Pdry <- apply (Prec, c(1,2), min) 
   
   tmp <- SUM_SEL
   tmp[tmp==0] = NA
-  Psdry <- apply(Prec*tmp, c(1,2), min, na.rm = TRUE) #where prec = -99, this is -99
-  Pswet <- apply(Prec*tmp, c(1,2), max, na.rm = TRUE) #where prec = -99, this is -99
+  Psdry <- apply(Prec*tmp, c(1,2), min, na.rm = TRUE) 
+  Pswet <- apply(Prec*tmp, c(1,2), max, na.rm = TRUE) 
   
   tmp <- !SUM_SEL
   tmp[tmp==0] = NA
-  Pwdry <- apply(Prec*tmp, c(1,2), min, na.rm = TRUE) #where prec = -99, this is -99
-  Pwwet <- apply(Prec*tmp, c(1,2), max, na.rm = TRUE) #where prec = -99, this is -99
+  Pwdry <- apply(Prec*tmp, c(1,2), min, na.rm = TRUE) 
+  Pwwet <- apply(Prec*tmp, c(1,2), max, na.rm = TRUE) 
   
   MAT <- apply(Temp, c(1,2), mean)
-  MAP <- apply(Prec, c(1,2), sum) #where prec = -99, this is -1188
-  Tmon10 <- apply(Temp > 10, c(1,2), sum) ##where temp = -99, this is 0
+  MAP <- apply(Prec, c(1,2), sum) 
+  Tmon10 <- apply(Temp > 10, c(1,2), sum) 
   Thot <- apply(Temp, c(1,2), max)
   Tcold <- apply(Temp, c(1,2), min)
   
@@ -64,7 +64,7 @@ kg_reclass <- function(Temp, Prec, type) {
   Pthresh[Pw>Ps*2.333] <- 2*MAT[Pw>Ps*2.333]       
   Pthresh[Ps>Pw*2.333] <- 2*MAT[Ps>Pw*2.333]+28 
   
-  B <- MAP < 10*Pthresh #En el caso de NAs, no se cumple que -1188 < -1840
+  B <- MAP < 10*Pthresh 
   BW <- B & MAP < 5*Pthresh 
   BWh <- BW & MAT >= 18
   BWk <- BW & MAT < 18
@@ -72,12 +72,12 @@ kg_reclass <- function(Temp, Prec, type) {
   BSh <- BS & MAT >= 18
   BSk <- BS & MAT < 18
   
-  A <- Tcold >= 18 & !B #En el caso de NAs, no se cumple que -99 >= 18   
+  A <- Tcold >= 18 & !B 
   Af <- A & Pdry >= 60
   Am <- A & !Af & Pdry >= 100-MAP/25
   Aw <- A & !Af & Pdry < 100-MAP/25
   
-  C <- Thot > 10 & Tcold > 0 & Tcold < 18 & !B #En el caso de NAs no se cumple que -99>10 & -99>0 & Tcold<18
+  C <- Thot > 10 & Tcold > 0 & Tcold < 18 & !B 
   Cs <- C & Psdry<40 & Psdry<Pwwet/3
   Cw <- C & Pwdry<Pswet/10
   overlap <- Cs & Cw
@@ -94,7 +94,7 @@ kg_reclass <- function(Temp, Prec, type) {
   Cfb <- Cf & !Cfa & Tmon10 >= 4
   Cfc <- Cf & !Cfa & !Cfb & Tmon10>=1 & Tmon10<4
   
-  D <- Thot>10 & Tcold<=0 & !B   #En el caso de NAs no se cumple que -99>10 & -99<=0
+  D <- Thot>10 & Tcold<=0 & !B   
   Ds <- D & Psdry<40 & Psdry<Pwwet/3
   Dw <- D & Pwdry<Pswet/10
   overlap <- Ds & Dw
